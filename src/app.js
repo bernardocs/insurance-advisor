@@ -9,6 +9,7 @@ app.use(express.json());
 
 app.post('/', (req, res, next) => {
   const { value: user , error } = userSchema.validate(req.body);
+
   if (error) {
     console.error(JSON.stringify(error));
     const message = error.details.map(d => d.message).join(', ');
