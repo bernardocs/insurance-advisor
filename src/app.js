@@ -1,5 +1,6 @@
 import express from 'express';
-import userSchema from './validation/user.schema.js';
+import userSchema from './validations/user.schema.js';
+import advisor from './services/advisor.js';
 
 const app = express();
 
@@ -7,7 +8,7 @@ const app = express();
 app.use(express.json());
 
 app.post('/', (req, res, next) => {
-  const { value, error } = userSchema.validate(req.body);
+  const { value: user , error } = userSchema.validate(req.body);
   if (error) {
     console.error(JSON.stringify(error));
     const message = error.details.map(d => d.message).join(', ');
@@ -15,7 +16,7 @@ app.post('/', (req, res, next) => {
     return res.status(400).json({ error: message });
   }
 
-  res.json(value);
+  res.json(advisor.advise(user));
 });
 
 const port = process.env.PORT || '3000';
