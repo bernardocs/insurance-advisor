@@ -107,4 +107,16 @@ export class Processor {
 
 }
 
-export default Processor;
+export function processScore(user, baseInsuranceScores) {
+  return new Processor(user, baseInsuranceScores)
+    .processPossessions()
+    .processAge()
+    .processIncome()
+    .processHouse()
+    .processDependents()
+    .processMarriage()
+    .processVehicle()
+    .output;
+}
+
+export default processScore;

@@ -1,6 +1,10 @@
-import Processor from './processor.js';
+import processScore from './processor.js';
 
-export function scoreMapper(score) {
+export function scoreMessage(score) {
+  if (score === 'ineligible') {
+    return score;
+  }
+
   if (score >= 2) {
     return "responsible";
   }
@@ -10,6 +14,16 @@ export function scoreMapper(score) {
   }
 
   return "economic";
+}
+
+export function mapScore(processedScore) {
+  const mappedScore = { ...processedScore };
+
+  for (const insurance in mappedScore) {
+    mappedScore[insurance] = scoreMessage(mappedScore[insurance])
+  }
+
+  return mappedScore;
 }
 
 export function advise(user) {
@@ -24,15 +38,9 @@ export function advise(user) {
     life: baseScore
   };
 
-  return new Processor(user, baseOutput)
-    .processPossessions()
-    .processAge()
-    .processIncome()
-    .processHouse()
-    .processDependents()
-    .processMarriage()
-    .processVehicle()
-    .output;
+  const processedScore = processScore(user, baseOutput);
+
+  return mapScore(processedScore);
 }
 
 export default {
