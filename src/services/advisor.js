@@ -5,7 +5,7 @@ export function scoreMessage(score) {
     return score;
   }
 
-  if (score >= 2) {
+  if (score >= 3) {
     return "responsible";
   }
 
